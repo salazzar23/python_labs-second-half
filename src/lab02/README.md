@@ -80,5 +80,5 @@
 ---
 
 ### Демонстрация работы (demo.py)
-![Результат](../../images/lab02/imagecopy2.png)
+!(../../images/lab02/imagecopy2.png)
 **Вывод программы:**
