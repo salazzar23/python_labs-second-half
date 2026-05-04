@@ -1,0 +1,10 @@
+__pycahce__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+.env
+.DS_Store
