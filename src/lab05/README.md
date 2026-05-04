@@ -78,11 +78,11 @@
 - Использование `lambda`-выражений
 - Передача функций как аргументов
 
-![Сценарий 1](../../images/lab05/image51.png)
+![Сценарий 1.1](../../images/lab05/image51.png)
 
-![Сценарий 1](../../images/lab05/image52.png)
+![Сценарий 1.2](../../images/lab05/image52.png)
 
-![Сценарий 1](../../images/lab05/image53.png)
+![Сценарий 1.2](../../images/lab05/image53.png)
 
 ---
 
@@ -94,11 +94,11 @@
 - Методы `sort_by()` и `filter_by()` в коллекции
 - Сравнение `lambda` и именованной функции
 
-![Сценарий 2](../../images/lab05/image54.png)
+![Сценарий 2.1](../../images/lab05/image54.png)
 
-![Сценарий 2](../../images/lab05/image55.png)
+![Сценарий 2.2](../../images/lab05/image55.png)
 
-![Сценарий 2](../../images/lab05/image56.png)
+![Сценарий 2.3](../../images/lab05/image56.png)
 
 
 ---
@@ -111,10 +111,10 @@
 - Замена стратегии без изменения кода коллекции
 - Метод `chain()` для последовательных операций
 
-![Сценарий 3](../../images/lab05/image57.png)
+![Сценарий 3.1](../../images/lab05/image57.png)
 
-![Сценарий 3](../../images/lab05/image58.png)
+![Сценарий 3.2](../../images/lab05/image58.png)
 
-![Сценарий 3](../../images/lab05/image59.png)
+![Сценарий 3.3](../../images/lab05/image59.png)
 
 
