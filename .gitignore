@@ -1,10 +1,22 @@
-__pycahce__/
+# Python
+__pycache__/
 *.pyc
 *.pyo
 *.pyd
+*.pyc
 .Python
+
+# Virtual Environment
 env/
 venv/
 .venv/
 .env
+
+# OS
 .DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
