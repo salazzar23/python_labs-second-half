@@ -132,3 +132,7 @@ class Outpatient(Patient):
     
     def get_type(self) -> str:
         return "Амбулаторный пациент"
+    
+
+
+     
