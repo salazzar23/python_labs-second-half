@@ -1,15 +1,11 @@
 """
 Лабораторная работа №6 - Generics и typing
-Демонстрация с 3 сценариями
-Предметная область: Медицина
+Демонстрация с одним универсальным Generic-классом TypedCollection[T]
 """
 
 from datetime import datetime, timedelta
 from models import Patient, Inpatient, Outpatient
-from container import (
-    TypedCollection, TypedDisplayCollection, TypedScoreCollection,
-    Displayable, Scorable
-)
+from container import TypedCollection, Displayable, Scorable, D, S
 
 
 def create_test_patients():
@@ -28,171 +24,134 @@ def create_test_patients():
     ]
 
 
-def print_separator(title: str) -> None:
-    """Печать разделителя."""
+def print_separator(title: str):
     print("\n" + "="*70)
     print(f" {title}")
     print("="*70)
 
 
 # ============================================================================
-# СЦЕНАРИЙ 1: Generics и типизация (оценка 3)
+# СЦЕНАРИЙ 1: Generic-коллекция с Patient (оценка 3)
 # ============================================================================
 
-def scenario_1_generics() -> None:
-    """Сценарий 1: Generic-коллекция и аннотации типов."""
-    print_separator("СЦЕНАРИЙ 1: GENERIC-КОЛЛЕКЦИЯ TYPEDCOLLECTION")
+def scenario_1_generics():
+    print_separator("СЦЕНАРИЙ 1: TYPEDCOLLECTION С PATIENT")
     
-    # Создаём типизированную коллекцию для Patient
-    collection: TypedCollection[Patient] = TypedCollection()
+    col: TypedCollection[Patient] = TypedCollection()
     patients = create_test_patients()
     
-    print("\n--- 1.1 Добавление пациентов в TypedCollection ---")
+    print("\n--- 1.1 Добавление пациентов ---")
     for p in patients[:4]:
-        collection.add(p)
+        col.add(p)
     
     print("\n--- 1.2 Вывод всех пациентов ---")
-    collection.print_all("TypedCollection[Patient]")
+    col.print_all("TypedCollection[Patient]")
     
     print("\n--- 1.3 Доступ по индексу ---")
-    print(f"      Первый пациент: {collection[0].name}")
-    print(f"      Последний пациент: {collection[-1].name}")
-    print(f"      Всего пациентов: {len(collection)}")
+    print(f"      Первый: {col[0].name}")
+    print(f"      Последний: {col[-1].name}")
+    print(f"      Всего: {len(col)}")
     
-    print("\n--- 1.4 Перебор через for ---")
-    for i, p in enumerate(collection):
-        print(f"      {i+1}. {p.name} - {p.get_short_info()}")
+    print("\n--- 1.4 Итерация через for ---")
+    for i, p in enumerate(col):
+        print(f"      {i+1}. {p.name}")
     
-    print("\n--- 1.5 Удаление пациента ---")
-    collection.remove(patients[1])
+    print("\n--- 1.5 Удаление ---")
+    col.remove(patients[1])
 
 
 # ============================================================================
 # СЦЕНАРИЙ 2: find, filter, map (оценка 4)
 # ============================================================================
 
-def scenario_2_find_filter_map() -> None:
-    """Сценарий 2: Методы find, filter, map с аннотациями."""
+def scenario_2_find_filter_map():
     print_separator("СЦЕНАРИЙ 2: FIND, FILTER, MAP")
     
-    collection: TypedCollection[Patient] = TypedCollection()
+    col: TypedCollection[Patient] = TypedCollection()
     patients = create_test_patients()
     
     for p in patients:
-        collection.add(p)
+        col.add(p)
     
-    print(f"\n--- 2.1 find() - поиск элемента ---")
-    print("   Поиск пациента с именем 'Петрова':")
-    found = collection.find(lambda p: "Петрова" in p.name)
+    print("\n--- 2.1 find() ---")
+    print("   Поиск 'Петрова':")
+    found = col.find(lambda p: "Петрова" in p.name)
     print(f"   Результат: {found.name if found else 'Не найден'}")
     
-    print("\n   Поиск пациента с диагнозом 'Рак' (не существует):")
-    not_found = collection.find(lambda p: "рак" in p.diagnosis.lower())
+    print("\n   Поиск 'Рак' (не существует):")
+    not_found = col.find(lambda p: "рак" in p.diagnosis.lower())
     print(f"   Результат: {'Найден' if not_found else 'Не найден'}")
     
-    print("\n--- 2.2 filter() - фильтрация элементов ---")
-    print("   Фильтр: пациенты старше 60 лет:")
-    seniors = collection.filter(lambda p: p.age > 60)
+    print("\n--- 2.2 filter() ---")
+    seniors = col.filter(lambda p: p.age > 60)
+    print("   Пациенты старше 60 лет:")
     for p in seniors:
         print(f"      - {p.name} ({p.age} лет)")
     
-    print("\n   Фильтр: стационарные пациенты (Inpatient):")
-    inpatients = collection.filter(lambda p: isinstance(p, Inpatient))
-    for p in inpatients:
-        print(f"      - {p.name} - {p.get_type()}")
+    print("\n--- 2.3 map() ---")
+    names = col.map(lambda p: p.name)
+    print(f"   Имена: {names}")
     
-    print("\n--- 2.3 map() - преобразование элементов (меняет тип!) ---")
-    print("   map: получить список имён пациентов (Patient -> str):")
-    names: list[str] = collection.map(lambda p: p.name)
-    for i, name in enumerate(names):
-        print(f"      {i+1}. {name}")
+    costs = col.map(lambda p: p.get_cost())
+    print(f"   Стоимости: {costs}")
+    print(f"   Общая стоимость: {sum(costs)} руб.")
     
-    print("\n   map: получить список стоимостей лечения (Patient -> float):")
-    costs: list[float] = collection.map(lambda p: p.get_cost())
-    print(f"      Стоимости: {costs}")
-    print(f"      Общая стоимость: {sum(costs)} руб.")
-    
-    print("\n   map: получить строковое представление (Patient -> str):")
-    infos = collection.map(lambda p: p.get_short_info())
-    for i, info in enumerate(infos):
-        print(f"      {i+1}. {info}")
-    
-    print("\n--- 2.4 Демонстрация смены типа через map ---")
+    print("\n--- 2.4 Смена типа через map ---")
     print("   Было: TypedCollection[Patient]")
-    print("   Стало: list[str] после map с lambda p: p.name")
-    print("   Стало: list[float] после map с lambda p: p.get_cost()")
-    print("   Это показывает зачем нужен второй TypeVar (R)")
+    print("   Стало: list[str] после map(lambda p: p.name)")
+    print("   Стало: list[float] после map(lambda p: p.get_cost())")
 
 
 # ============================================================================
 # СЦЕНАРИЙ 3: Protocol и структурная типизация (оценка 5)
 # ============================================================================
 
-def scenario_3_protocols() -> None:
-    """Сценарий 3: Protocol и структурная типизация."""
+def scenario_3_protocols():
     print_separator("СЦЕНАРИЙ 3: PROTOCOL И СТРУКТУРНАЯ ТИПИЗАЦИЯ")
     
     today = datetime.now()
     yesterday = today - timedelta(days=1)
     tomorrow = today + timedelta(days=1)
     
-    # Создаём объекты разных классов из иерархии
-    # Ни один из них не наследуется от Displayable или Scorable!
-    # Но у всех есть методы display() и get_score()
-    
     patient = Patient("P001", "Иванов Иван", 45, "Гипертония", "Кардиолог")
     inpatient = Inpatient("P002", "Петрова Мария", 68, "Инфаркт", "Кардиолог", "301", yesterday)
     outpatient = Outpatient("P003", "Кузнецова Елена", 35, "Гастрит", "Гастроэнтеролог", tomorrow)
     
-    print("\n--- 3.1 TypedDisplayCollection[D] с bound=Displayable ---")
-    print("   Классы не наследуются от Displayable, но имеют метод display()")
-    print("   → Они структурно совместимы с протоколом!")
+    print("\n--- 3.1 TypedCollection с ограничением Displayable ---")
+    display_col: TypedCollection[D] = TypedCollection()
+    display_col.add(patient)
+    display_col.add(inpatient)
+    display_col.add(outpatient)
+    display_col.display_all()
     
-    display_collection: TypedDisplayCollection[Displayable] = TypedDisplayCollection()
-    
-    print("\n   Добавление объектов в Displayable коллекцию:")
-    display_collection.add(patient)      # Patient имеет display()
-    display_collection.add(inpatient)    # Inpatient имеет display()
-    display_collection.add(outpatient)   # Outpatient имеет display()
-    
-    print("\n   Вывод через display() метод:")
-    display_collection.display_all()
-    
-    print("\n--- 3.2 TypedScoreCollection[S] с bound=Scorable ---")
-    print("   Классы имеют метод get_score() → подходят под протокол Scorable")
-    
-    score_collection: TypedScoreCollection[Scorable] = TypedScoreCollection()
-    
-    score_collection.add(patient)
-    score_collection.add(inpatient)
-    score_collection.add(outpatient)
-    
-    print("\n   Вывод с оценками (score):")
-    score_collection.print_scores()
+    print("\n--- 3.2 TypedCollection с ограничением Scorable ---")
+    score_col: TypedCollection[S] = TypedCollection()
+    score_col.add(patient)
+    score_col.add(inpatient)
+    score_col.add(outpatient)
+    score_col.print_scores()
     
     print("\n--- 3.3 Сортировка по score() ---")
-    sorted_by_score = score_collection.get_sorted_by_score()
-    print("   Пациенты, отсортированные по приоритету (от highest к lowest):")
-    for i, p in enumerate(sorted_by_score):
-        score = p.get_score()
-        print(f"      {i+1}. {p.display()} | Score: {score}")
+    sorted_patients = score_col.get_sorted_by_score()
+    print("   Пациенты по приоритету (от highest к lowest):")
+    for i, p in enumerate(sorted_patients):
+        score = p.get_score() if hasattr(p, 'get_score') else 0
+        print(f"      {i+1}. {p.name} | Score: {score}")
     
-    print("\n--- 3.4 Демонстрация структурной типизации ---")
-    print("   Ключевой момент: классы Patient, Inpatient, Outpatient")
-    print("   НЕ наследуются от Displayable и Scorable явно.")
-    print("   Но они имеют нужные методы (display, get_score).")
-    print("   Python принимает их благодаря структурной типизации (Protocol).")
-    print("   Это и есть 'утиная типизация' на уровне типов!")
+    print("\n--- 3.4 Структурная совместимость ---")
+    print("   Классы НЕ наследуются от Displayable/Scorable.")
+    print("   Но они имеют методы display() и get_score().")
+    print("   Python принимает их благодаря Protocol.")
 
 
 # ============================================================================
 # MAIN
 # ============================================================================
 
-def main() -> None:
+def main():
     print("\n" + "█"*70)
     print("ЛАБОРАТОРНАЯ РАБОТА №6 - GENERICS И TYPING")
-    print("Предметная область: МЕДИЦИНА")
+    print("Один универсальный Generic-класс TypedCollection[T]")
     print("█"*70)
     
     scenario_1_generics()
