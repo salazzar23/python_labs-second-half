@@ -11,3 +11,5 @@
 ## [LAB05](src/lab05/README.md)
 
 ## [LAB06](src/lab06/README.md)
+
+## [LAB07](src/lab07/README.md)
