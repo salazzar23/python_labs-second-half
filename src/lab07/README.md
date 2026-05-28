@@ -113,7 +113,7 @@
 
 ### Демонстрация работы терминала (asciinema)
 
-[![asciinema](https://asciinema.org/a/gQuqmBvZIT4k900Y3.svg)](https://asciinema.org/a/gQuqmBvZIT4k900Y3)
+[![asciinema](https://asciinema.org/a/OAxGr3WuxVLSjCUC)](https://asciinema.org/a/OAxGr3WuxVLSjCUC)
 
 ---
 
