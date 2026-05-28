@@ -113,8 +113,12 @@
 
 ### Демонстрация работы терминала (asciinema)
 
+<<<<<<< HEAD
 [![asciinema](https://asciinema.org/a/OAxGr3WuxVLSjCUC)](https://asciinema.org/a/OAxGr3WuxVLSjCUC)
 
+=======
+[![asciinema](https://asciinema.org/a/94aKHv1I79FTzezj)](https://asciinema.org/a/94aKHv1I79FTzezj)
+>>>>>>> d96524da6b77d6699dd089055bfe01b6ca5581e6
 ---
 
 
